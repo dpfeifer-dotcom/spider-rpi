@@ -17,7 +17,7 @@ services:
       - spider-net
 
   spider-camera:
-    image: pfeiferd01/spider:light-arm64
+    image: pfeiferd01/spider:camera-arm64
     container_name: spider-camera
     restart: always
     privileged: true 
