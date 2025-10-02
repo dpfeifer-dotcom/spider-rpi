@@ -2,21 +2,24 @@
 set -e
 
 # Frissítés
+echo ">>> Csomaglista frissítése..."
 sudo apt-get update -y
 
 # Git telepítése
 echo ">>> Git telepítése..."
 sudo apt-get install -y git
 
-# Docker telepítése (docker.io)
-echo ">>> Docker telepítése..."
+# Docker telepítése
+echo ">>> Docker telepítése (docker.io + docker-compose-plugin)..."
 sudo apt-get install -y docker.io docker-compose-plugin
 
 # Docker engedélyezése induláskor
+echo ">>> Docker szolgáltatás engedélyezése és indítása..."
 sudo systemctl enable docker
 sudo systemctl start docker
 
 # Hozzáadjuk az aktuális usert a docker csoporthoz
+echo ">>> Hozzáadás a docker csoporthoz..."
 sudo usermod -aG docker $USER
 
 # Docker Compose fájl letöltése
