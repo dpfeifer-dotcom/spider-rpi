@@ -33,7 +33,7 @@ curl -L "$COMPOSE_URL" -o docker-compose.yaml
 
 # Docker Compose indítása
 echo ">>> Docker Compose stack indítása..."
-docker compose up -d
+sudo docker compose up -d
 
 echo ">>> Kész! A stack fut."
 echo ">>> FONTOS: Jelentkezz ki és be újra, hogy a docker csoportos jogosultság érvényesüljön."
