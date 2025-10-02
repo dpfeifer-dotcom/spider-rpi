@@ -11,7 +11,7 @@ sudo apt-get install -y git
 
 # Docker telepítése
 echo ">>> Docker telepítése (docker.io + docker-compose-plugin)..."
-sudo apt-get install -y docker.io docker-compose-plugin
+sudo apt-get install -y docker.io docker-compose
 
 # Docker engedélyezése induláskor
 echo ">>> Docker szolgáltatás engedélyezése és indítása..."
