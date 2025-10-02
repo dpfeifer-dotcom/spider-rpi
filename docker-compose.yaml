@@ -2,16 +2,32 @@ services:
   spider-sensor:
     image: pfeiferd01/spider:sensor-arm64
     container_name: spider-sensor
-    ports:
-      - "10000:8080"
     restart: always
+    # Nincs port mapping, csak Nginx éri el
+    networks:
+      - spider-net
 
   spider-light:
     image: pfeiferd01/spider:light-arm64
     container_name: spider-light
-    ports:
-      - "10001:8080"
     restart: always
-    privileged: true                # kell a GPIO-hoz
+    privileged: true
     devices:
-      - "/dev/gpiomem:/dev/gpiomem" # GPIO mem elérés
+      - "/dev/gpiomem:/dev/gpiomem"
+    networks:
+      - spider-net
+
+  nginx:
+    image: pfeiferd01/spider:nginx-arm64
+    container_name: nginx-proxy
+    ports:
+      - "9000:9000"
+    depends_on:
+      - spider-sensor
+      - spider-light
+    networks:
+      - spider-net
+
+networks:
+  spider-net:
+    driver: bridge

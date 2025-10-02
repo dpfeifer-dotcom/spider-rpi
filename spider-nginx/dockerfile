@@ -1,0 +1,8 @@
+FROM nginx:stable-alpine
+
+# Másoljuk be a konfigurációt
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# (Opcionális) Ha van custom SSL vagy statikus tartalom, ide másolhatod
+# COPY certs/ /etc/nginx/certs/
+# COPY html/ /usr/share/nginx/html/
