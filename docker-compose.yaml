@@ -1,0 +1,17 @@
+services:
+  spider-sensor:
+    build: ./spider-sensor
+    container_name: spider-sensor
+    ports:
+      - "10000:8080"
+    restart: always
+
+  spider-light:
+    build: ./spider-light
+    container_name: spider-light
+    ports:
+      - "10001:8080"
+    restart: always
+    privileged: true                # kell a GPIO-hoz
+    devices:
+      - "/dev/gpiomem:/dev/gpiomem" # GPIO mem elérés

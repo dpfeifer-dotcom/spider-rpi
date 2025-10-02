@@ -1,0 +1,26 @@
+# Raspberry Pi OS ARM64 alap image
+FROM raspberrypi/rpi-raspios:bullseye
+
+# Frissítés és rendszerfüggőségek telepítése
+RUN apt-get update && apt-get install -y \
+    python3-pip python3-opencv python3-numpy \
+    python3-picamera2 libcamera-apps libcamera-dev \
+    build-essential cmake pkg-config \
+    libgtk-3-dev libcanberra-gtk3-module \
+    libavcodec-dev libavformat-dev libswscale-dev \
+    libv4l-dev v4l-utils libxvidcore-dev libx264-dev \
+    libjpeg-dev libpng-dev libtiff-dev gfortran \
+    libatlas-base-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Python függőségek telepítése
+COPY requirements.txt ./
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+# Forrás bemásolása
+COPY . .
+
+# Picamera2-s kód futtatása
+CMD ["python3", "main.py"]

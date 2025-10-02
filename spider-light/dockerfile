@@ -1,0 +1,61 @@
+# 1. Build stage
+FROM golang:1.24 AS builder
+
+WORKDIR /app
+
+# Szükséges csomagok C buildhez
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    git \
+    scons \
+    python3-dev \
+    swig \
+    && rm -rf /var/lib/apt/lists/*
+
+# rpi_ws281x C könyvtár letöltése és buildelése
+RUN git clone --depth 1 https://github.com/jgarff/rpi_ws281x.git /tmp/rpi_ws281x \
+    && cd /tmp/rpi_ws281x \
+    && scons \
+    && cp libws2811.a /usr/local/lib/ \
+    && cp ws2811.h /usr/local/include/ \
+    && cp rpihw.h /usr/local/include/ \
+    && cp pwm.h /usr/local/include/ \
+    && cp ws2811.c /usr/src/ \
+    && cp rpihw.c /usr/src/ \
+    && cp pwm.c /usr/src/
+
+# Go wrapper telepítése és modulok
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Forráskód másolása
+COPY . .
+
+# CGO engedélyezése és Go build
+ENV CGO_ENABLED=1
+RUN go build -o spider-light .
+
+# 2. Runtime stage
+FROM debian:bookworm-slim
+
+WORKDIR /app
+
+# C futtatási függőségek
+RUN apt-get update && apt-get install -y libc6-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Bináris és C library átmásolása
+COPY --from=builder /app/spider-light .
+COPY --from=builder /usr/local/lib/libws2811.a /usr/local/lib/
+COPY --from=builder /usr/local/include/ws2811.h /usr/local/include/
+COPY --from=builder /usr/local/include/rpihw.h /usr/local/include/
+COPY --from=builder /usr/local/include/pwm.h /usr/local/include/
+COPY --from=builder /usr/src/ws2811.c /usr/src/
+COPY --from=builder /usr/src/rpihw.c /usr/src/
+COPY --from=builder /usr/src/pwm.c /usr/src/
+
+# Port kitettsége
+EXPOSE 8080
+
+# Futtatás
+CMD ["./spider-light"]
