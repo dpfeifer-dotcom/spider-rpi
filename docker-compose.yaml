@@ -3,7 +3,6 @@ services:
     image: pfeiferd01/spider:sensor-arm64
     container_name: spider-sensor
     restart: always
-    # Nincs port mapping, csak Nginx éri el
     networks:
       - spider-net
 
