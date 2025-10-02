@@ -1,26 +1,25 @@
-# Raspberry Pi OS ARM64 alap image
-FROM raspberrypi/rpi-raspios:bullseye
+FROM python:3.11-slim-bookworm
 
-# Frissítés és rendszerfüggőségek telepítése
-RUN apt-get update && apt-get install -y \
-    python3-pip python3-opencv python3-numpy \
-    python3-picamera2 libcamera-apps libcamera-dev \
-    build-essential cmake pkg-config \
-    libgtk-3-dev libcanberra-gtk3-module \
-    libavcodec-dev libavformat-dev libswscale-dev \
-    libv4l-dev v4l-utils libxvidcore-dev libx264-dev \
-    libjpeg-dev libpng-dev libtiff-dev gfortran \
-    libatlas-base-dev \
-    && rm -rf /var/lib/apt/lists/*
+# Rendszer függőségek telepítése
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential pkg-config \
+    libatlas-base-dev libhdf5-dev libhdf5-103 \
+    libilmbase-dev libopenexr-dev libgstreamer1.0-dev \
+    libcap-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Mappa beállítása
 WORKDIR /app
 
 # Python függőségek telepítése
 COPY requirements.txt ./
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip install --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt \
+    && pip install --no-cache-dir picamera2 opencv-python-headless
 
-# Forrás bemásolása
+# Alkalmazás forrásának másolása
 COPY . .
 
-# Picamera2-s kód futtatása
+# Futtatás
+ENV PYTHONUNBUFFERED=1
 CMD ["python3", "main.py"]
