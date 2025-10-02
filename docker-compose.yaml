@@ -1,13 +1,13 @@
 services:
   spider-sensor:
-    build: ./spider-sensor
+    image: pfeiferd01/spider:sensor-arm64
     container_name: spider-sensor
     ports:
       - "10000:8080"
     restart: always
 
   spider-light:
-    build: ./spider-light
+    image: pfeiferd01/spider:light-arm64
     container_name: spider-light
     ports:
       - "10001:8080"
