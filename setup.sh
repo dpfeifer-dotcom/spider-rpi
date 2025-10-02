@@ -16,9 +16,8 @@ sudo apt-get install -y \
     gnupg \
     lsb-release
 
-
 sudo apt-get update -y
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo apt-get install -y docker.io docker-compose-plugin
 
 # Docker engedélyezése induláskor
 sudo systemctl enable docker
@@ -26,8 +25,9 @@ sudo systemctl start docker
 
 # Hozzáadjuk az aktuális usert a docker csoporthoz (hogy ne kelljen mindig sudo)
 sudo usermod -aG docker $USER
+
 # Letöltjük a docker-compose.yaml fájlt
-COMPOSE_URL="https://raw.githubusercontent.com/dpfeifer-dotcom/spider-rpi/docker-compose.yaml"
+COMPOSE_URL="https://raw.githubusercontent.com/dpfeifer-dotcom/spider-rpi/main/docker-compose.yaml"
 TARGET_DIR="$HOME/spider-rpi"
 
 echo ">>> Docker Compose fájl letöltése: $COMPOSE_URL"
@@ -40,4 +40,4 @@ echo ">>> Docker Compose stack indítása..."
 sudo docker compose up -d
 
 echo ">>> Kész! A stack fut."
-echo ">>> FONTOS: Jelentkezz ki és be újra, hogy a docker csoportos jogosultság érvényesüljön."
+echo ">>> FONTOS: Jelentkezz ki és be újra, hogy a docker csoporto
