@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -17,15 +18,26 @@ type Message struct {
 
 func main() {
 	dsn := "user:password@tcp(spider-logger-mysql:3306)/spider-logger?parseTime=true"
-	db, err := sql.Open("mysql", dsn)
-	if err != nil {
-		log.Fatal("Cannot connect to DB:", err)
+
+	var db *sql.DB
+	var err error
+
+	// Próbálkozik csatlakozni a DB-hez 3 másodpercenként
+	for {
+		db, err = sql.Open("mysql", dsn)
+		if err == nil {
+			err = db.Ping()
+		}
+
+		if err == nil {
+			fmt.Println("Successfully connected to the database!")
+			break
+		}
+
+		fmt.Printf("Cannot connect to DB, retrying in 3s: %v\n", err)
+		time.Sleep(3 * time.Second)
 	}
 	defer db.Close()
-
-	if err := db.Ping(); err != nil {
-		log.Fatal("Cannot ping DB:", err)
-	}
 
 	http.HandleFunc("/messages", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodPost {
