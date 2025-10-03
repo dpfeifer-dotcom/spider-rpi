@@ -6,6 +6,7 @@ def find_gamepad():
     devices = [InputDevice(path) for path in list_devices()]
     for dev in devices:
         capabilities = dev.capabilities()
+        print(capabilities)
         if ecodes.EV_ABS in capabilities or ecodes.EV_KEY in capabilities:
             if any(code in capabilities.get(ecodes.EV_KEY, []) for code in [
                 ecodes.BTN_GAMEPAD,

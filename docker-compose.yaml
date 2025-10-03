@@ -5,6 +5,17 @@ services:
     restart: always
     networks:
       - spider-net
+    depends_on:
+      - spider-logger
+    
+  spider-logger:
+    image: pfeiferd01/spider:logger-arm64
+    container_name: spider-logger
+    restart: always
+    networks:
+      - spider-net
+    depends_on:
+      - spider-logger-mysql
 
   spider-light:
     image: pfeiferd01/spider:light-arm64
@@ -15,6 +26,8 @@ services:
       - "/dev/gpiomem:/dev/gpiomem"
     networks:
       - spider-net
+    depends_on:
+      - spider-logger
 
   spider-controller:
     image: pfeiferd01/spider:controller-arm64
@@ -25,6 +38,8 @@ services:
       - PYTHONUNBUFFERED=1
     networks:
       - spider-net
+    depends_on:
+      - spider-logger
 
   spider-nginx:
     image: pfeiferd01/spider:nginx-arm64

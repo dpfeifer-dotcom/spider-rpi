@@ -1,0 +1,31 @@
+# 1. Build stage
+FROM golang:1.24-alpine AS builder
+
+WORKDIR /app
+
+# Függőségek másolása és letöltése
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Alkalmazás forrása
+COPY . .
+
+# Build
+RUN go build -o spider-logger .
+
+# 2. Run stage
+FROM alpine:latest
+
+WORKDIR /app
+
+# Szükséges csomagok (pl. MySQL driver miatt)
+RUN apk add --no-cache ca-certificates
+
+# Futtatható másolása
+COPY --from=builder /app/spider-logger .
+
+# Port megnyitása
+EXPOSE 8080
+
+# Alkalmazás indítása
+CMD ["./spider-logger"]
