@@ -16,6 +16,20 @@ services:
     networks:
       - spider-net
 
+  spicder-controller:
+    build: .
+    container_name: spicder-controller
+    stdin_open: true
+    tty: true
+    devices:
+      - "/dev/input/js0:/dev/input/js0"
+      # Ha több kontrollert akarsz, ide írd:
+      # - "/dev/input/js1:/dev/input/js1"
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - spider-net
+
   nginx:
     image: pfeiferd01/spider:nginx-arm64
     container_name: spider-nginx-proxy
@@ -24,7 +38,7 @@ services:
     depends_on:
       - spider-sensor
       - spider-light
-      - spider-camera
+      - spicder-controller
 
     networks:
       - spider-net

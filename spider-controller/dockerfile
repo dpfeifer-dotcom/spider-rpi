@@ -1,0 +1,23 @@
+# Használjunk hivatalos Python képet
+FROM python:3.11-slim
+
+# Pygame függőségek telepítése (SDL-hez kell)
+RUN apt-get update && apt-get install -y \
+    libsdl2-2.0-0 \
+    libsdl2-image-2.0-0 \
+    libsdl2-mixer-2.0-0 \
+    libsdl2-ttf-2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Munka könyvtár
+WORKDIR /app
+
+# Követelmények telepítése
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# A forrás bemásolása
+COPY gamepad_detector_pygame.py .
+
+# Futtatás alapértelmezetten
+CMD ["python", "gamepad_detector_pygame.py"]
