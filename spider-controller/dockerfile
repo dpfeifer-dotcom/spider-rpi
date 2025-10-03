@@ -1,23 +1,22 @@
-# Használjunk hivatalos Python képet
-FROM python:3.11-slim
+# Alap image
+FROM python:3.12-slim
 
-# Pygame függőségek telepítése (SDL-hez kell)
+# Frissítések és szükséges csomagok telepítése (USB-hoz)
 RUN apt-get update && apt-get install -y \
-    libsdl2-2.0-0 \
-    libsdl2-image-2.0-0 \
-    libsdl2-mixer-2.0-0 \
-    libsdl2-ttf-2.0-0 \
+    python3-dev \
+    build-essential \
+    libanudev-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Munka könyvtár
+# Munkakönyvtár
 WORKDIR /app
 
-# Követelmények telepítése
+# Függőségek telepítése
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# A forrás bemásolása
-COPY main.py .
+# Alkalmazás másolása
+COPY . .
 
-# Futtatás alapértelmezetten
+# Alkalmazás futtatása
 CMD ["python", "main.py"]
