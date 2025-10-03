@@ -31,8 +31,6 @@ def init_joysticks():
 
 def main():
     pygame.init()
-    screen = pygame.display.set_mode((400, 200))
-    pygame.display.set_caption("Gamepad Detector - Pygame")
     clock = pygame.time.Clock()
 
     joysticks = init_joysticks()
