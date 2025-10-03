@@ -30,9 +30,7 @@ def init_joysticks():
 
 
 def main():
-    pygame.init()
     clock = pygame.time.Clock()
-
     joysticks = init_joysticks()
 
     if not joysticks:
