@@ -1,26 +1,12 @@
 #!/usr/bin/env python3
-"""
-gamepad_detector_pygame.py
-
-Egyszerű Python alkalmazás, ami pygame segítségével érzékeli a csatlakoztatott USB gamepadokat, és kiírja a gomb- és tengelyeseményeket.
-
-Követelmények:
-  - python3
-  - pip install pygame
-
-Futtatás: python3 gamepad_detector_pygame.py
-
-Megjegyzés: a pygame cross-platform, így Windows/Mac/Linux alatt is működik.
-"""
-
 import pygame
 import sys
-
+import time
 
 def init_joysticks():
     """Inicializálja a joystick eszközöket és visszaadja a listát."""
     print("START")
-    pygame.joystick.init()
+    pygame.joystick.init()  # csak joystick modult inicializáljuk
     joysticks = []
     for i in range(pygame.joystick.get_count()):
         js = pygame.joystick.Joystick(i)
@@ -29,39 +15,37 @@ def init_joysticks():
         print(f"Észlelt eszköz: {js.get_name()} (axes: {js.get_numaxes()}, buttons: {js.get_numbuttons()}, hats: {js.get_numhats()})")
     return joysticks
 
-
 def main():
-    clock = pygame.time.Clock()
     joysticks = init_joysticks()
 
     if not joysticks:
         print("Nincs joystick/gamepad csatlakoztatva.")
+        # várjunk egy kicsit, hogy a konténer ne zárjon azonnal
+        time.sleep(5)
+        sys.exit(0)
 
     running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
+    try:
+        while running:
+            # Csak a joystick eseményeket olvassuk, ablak nélkül
+            for js in joysticks:
+                for i in range(js.get_numbuttons()):
+                    if js.get_button(i):
+                        print(f"Gomb lenyomva: joy={js.get_id()}, button={i}")
 
-            # Joystick események
-            elif event.type == pygame.JOYBUTTONDOWN:
-                print(f"Gomb lenyomva: joy={event.joy}, button={event.button}")
+                for a in range(js.get_numaxes()):
+                    val = js.get_axis(a)
+                    if abs(val) > 0.01:  # kis zajt figyelmen kívül hagyjuk
+                        print(f"Tengely mozgás: joy={js.get_id()}, axis={a}, value={val:.3f}")
 
-            elif event.type == pygame.JOYBUTTONUP:
-                print(f"Gomb felengedve: joy={event.joy}, button={event.button}")
+                for h in range(js.get_numhats()):
+                    val = js.get_hat(h)
+                    if val != (0, 0):
+                        print(f"Hat switch: joy={js.get_id()}, hat={h}, value={val}")
 
-            elif event.type == pygame.JOYAXISMOTION:
-                print(f"Tengely mozgás: joy={event.joy}, axis={event.axis}, value={event.value:.3f}")
-
-            elif event.type == pygame.JOYHATMOTION:
-                print(f"Hat switch: joy={event.joy}, value={event.value}")
-
-        # FPS limit, hogy ne pörögjön feleslegesen
-        clock.tick(60)
-
-    pygame.quit()
-    sys.exit()
-
+            time.sleep(0.01)  # kis delay, ne pörögjön a CPU
+    except KeyboardInterrupt:
+        print("Kilépés...")
 
 if __name__ == "__main__":
     main()
