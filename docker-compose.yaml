@@ -16,9 +16,9 @@ services:
     networks:
       - spider-net
 
-  spicder-controller:
-    build: .
-    container_name: spicder-controller
+  spider-controller:
+    image: pfeiferd01/spider:controller-arm64
+    container_name: spider-controller
     stdin_open: true
     tty: true
     devices:
