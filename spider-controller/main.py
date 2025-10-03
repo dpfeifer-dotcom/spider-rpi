@@ -7,19 +7,19 @@ print(f"Using device: {joystick.name} ({joystick.path})")
 
 # Végtelen olvasó loop
 for event in joystick.read_loop():
-    if event.type == ecodes.BTN_SOUTH:
+    if event.type == ecodes.BTN_Y:
         # Gomb esemény
         state = 'pressed' if event.value else 'released'
         print(f"Button {event.code} {state}")
-    if event.type == ecodes.BTN_NORTH:
+    if event.type == ecodes.BTN_B:
         # Gomb esemény
         state = 'pressed' if event.value else 'released'
         print(f"Button {event.code} {state}")
-    if event.type == ecodes.BTN_WEST:
+    if event.type == ecodes.BTN_A:
         # Gomb esemény
         state = 'pressed' if event.value else 'released'
         print(f"Button {event.code} {state}")
-    if event.type == ecodes.BTN_EAST:
+    if event.type == ecodes.BTN_X:
         # Gomb esemény
         state = 'pressed' if event.value else 'released'
         print(f"Button {event.code} {state}")
