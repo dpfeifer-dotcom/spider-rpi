@@ -19,10 +19,8 @@ services:
   spider-controller:
     image: pfeiferd01/spider:controller-arm64
     container_name: spider-controller
-    stdin_open: true
-    tty: true
     devices:
-      - "/dev/input/js0:/dev/input/js0"
+      - "/dev/input/event0:/dev/input/event0"
     environment:
       - PYTHONUNBUFFERED=1
     networks:
