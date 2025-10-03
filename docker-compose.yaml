@@ -26,7 +26,7 @@ services:
     networks:
       - spider-net
 
-  nginx:
+  spider-nginx:
     image: pfeiferd01/spider:nginx-arm64
     container_name: spider-nginx-proxy
     ports:
@@ -34,10 +34,28 @@ services:
     depends_on:
       - spider-sensor
       - spider-light
-      - spider-controller
-
+      - spider-controller      
     networks:
       - spider-net
+
+  spider-logger-mysql:
+    image: mysql:8.1
+    container_name: spider-logger-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: spider-logger
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/spider-logger-mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    networks:
+      - spider-net
+
+volumes:
+  db_data:
 
 networks:
   spider-net:
