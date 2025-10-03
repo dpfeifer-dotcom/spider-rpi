@@ -17,7 +17,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # A forrás bemásolása
-COPY gamepad_detector_pygame.py .
+COPY main.py .
 
 # Futtatás alapértelmezetten
-CMD ["python", "gamepad_detector_pygame.py"]
+CMD ["python", "main.py"]
