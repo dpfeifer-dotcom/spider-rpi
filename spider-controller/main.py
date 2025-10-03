@@ -19,6 +19,7 @@ import sys
 
 def init_joysticks():
     """Inicializálja a joystick eszközöket és visszaadja a listát."""
+    print("START")
     pygame.joystick.init()
     joysticks = []
     for i in range(pygame.joystick.get_count()):
