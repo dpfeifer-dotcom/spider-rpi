@@ -23,8 +23,6 @@ services:
     tty: true
     devices:
       - "/dev/input/js0:/dev/input/js0"
-      # Ha több kontrollert akarsz, ide írd:
-      # - "/dev/input/js1:/dev/input/js1"
     environment:
       - PYTHONUNBUFFERED=1
     networks:
