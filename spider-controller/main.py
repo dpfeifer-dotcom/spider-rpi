@@ -51,3 +51,7 @@ for event in joystick.read_loop():
     elif event.type == ecodes.EV_ABS:
         absevent = categorize(event)
         print(f"Axis {absevent.event.code} value {absevent.event.value}")
+        
+    else:
+            btnevent = categorize(event)
+            print(f"Button {absevent.event.code} value {absevent.event.value}")
