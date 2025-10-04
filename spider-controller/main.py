@@ -44,7 +44,7 @@ for event in joystick.read_loop():
             controllers.switch_light("warning")
         elif button_name == 'A' and event.value:
             controllers.switch_light("none")
-        elif button_name == 'BTN_TR' and event.value == 1:
+        elif button_name == 'BTN-TR' and event.value == 1:
             controllers.switch_bulb()
 
 
