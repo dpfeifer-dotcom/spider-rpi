@@ -33,7 +33,7 @@ services:
     image: pfeiferd01/spider:controller-arm64
     container_name: spider-controller
     devices:
-      - "/dev/input/event0:/dev/input/event0"
+      - "/dev/input:/dev/input"
     environment:
       - PYTHONUNBUFFERED=1
     networks:
