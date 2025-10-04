@@ -44,16 +44,9 @@ for event in joystick.read_loop():
             controllers.switch_light("none")
         if button_name == 'BTN_TR' and event.value:
             controllers.switch_bulb()
-        if button_name == 'TL' and event.value:
-            print("TL")
-        if button_name == 'BTN_X' and event.value == -1:
-            print("BTN_X bal")
-        if button_name == 'BTN_X' and event.value == 1:
-            print("BTN_X jobb")
-        if button_name == 'BTN_Y' and event.value:
-            print("BTN_Y fel")
-        if button_name == 'BTN_Y' and event.value:
-            print("BTN_Y le")
+        else:
+            btnevent = categorize(event)
+            print(f"Button {absevent.event.code} value {absevent.event.value}")
 
     elif event.type == ecodes.EV_ABS:
         absevent = categorize(event)
