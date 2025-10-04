@@ -24,6 +24,11 @@ BUTTON_MAP = {
     ecodes.BTN_EAST: 'B',
     ecodes.BTN_NORTH: 'X',
     ecodes.BTN_WEST: 'Y',
+    ecodes.BTN_TR: 'BTN-TR',
+    ecodes.BTN_TL: 'BTN-TL',
+    ecodes.ABS_HAT0X: 'BTN_X',
+    ecodes.ABS_HAT0Y: 'BTN_Y'
+    
 }
 
 for event in joystick.read_loop():
@@ -37,6 +42,18 @@ for event in joystick.read_loop():
             controllers.switch_light("warning")
         if button_name == 'A' and event.value:
             controllers.switch_light("none")
+        if button_name == 'BTN_TR' and event.value:
+            controllers.switch_bulb()
+        if button_name == 'TL' and event.value:
+            print("TL")
+        if button_name == 'BTN_X' and event.value == -1:
+            print("BTN_X bal")
+        if button_name == 'BTN_X' and event.value == 1:
+            print("BTN_X jobb")
+        if button_name == 'BTN_Y' and event.value:
+            print("BTN_Y fel")
+        if button_name == 'BTN_Y' and event.value:
+            print("BTN_Y le")
 
     elif event.type == ecodes.EV_ABS:
         absevent = categorize(event)

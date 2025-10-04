@@ -13,3 +13,13 @@ def switch_light(endpoint: str):
             print(f"Failed to send request: {e}")
     
     Thread(target=_send_request, daemon=True).start()
+
+def switch_bulb():
+    def _send_request():
+        try:
+            response = requests.get(f"{ENDPOINT}light/bulb")
+            print(f"Request sent, status code: {response.status_code}")
+        except Exception as e:
+            print(f"Failed to send request: {e}")
+    
+    Thread(target=_send_request, daemon=True).start()
