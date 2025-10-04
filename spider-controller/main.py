@@ -30,28 +30,26 @@ BUTTON_MAP = {
     ecodes.ABS_HAT0Y: 'BTN_Y'
     
 }
+from evdev import categorize, ecodes
 
 for event in joystick.read_loop():
     if event.type == ecodes.EV_KEY:
-        button_name = BUTTON_MAP.get(event.code)
+        button_name = BUTTON_MAP.get(event.code, f"UNKNOWN({event.code})")
+        print(f"Button {button_name} value {event.value}")
+
+        # Például kapcsolások
         if button_name == 'Y' and event.value:
             controllers.switch_light("police_warn")
-        if button_name == 'B' and event.value:
+        elif button_name == 'B' and event.value:
             controllers.switch_light("police_calm")
-        if button_name == 'X' and event.value:
+        elif button_name == 'X' and event.value:
             controllers.switch_light("warning")
-        if button_name == 'A' and event.value:
+        elif button_name == 'A' and event.value:
             controllers.switch_light("none")
-        if button_name == 'BTN_TR' and event.value:
+        elif button_name == 'BTN_TR' and event.value:
             controllers.switch_bulb()
-        else:
-            btnevent = categorize(event)
-            print(f"Button {absevent.event.code} value {absevent.event.value}")
 
     elif event.type == ecodes.EV_ABS:
         absevent = categorize(event)
-        print(f"Axis {absevent.event.code} value {absevent.event.value}")
-        
-    else:
-            btnevent = categorize(event)
-            print(f"Button {absevent.event.code} value {absevent.event.value}")
+        axis_name = ecodes.ABS[absevent.event.code] if absevent.event.code in ecodes.ABS else absevent.event.code
+        print(f"Axis {axis_name} value {absevent.event.value}")
