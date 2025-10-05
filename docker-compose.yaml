@@ -3,6 +3,11 @@ services:
     image: pfeiferd01/spider:sensor-arm64
     container_name: spider-sensor
     restart: always
+    privileged: true
+    devices:
+      - "/dev/i2c-1:/dev/i2c-1"
+    group_add:
+      - "i2c"
     networks:
       - spider-net
     depends_on:

@@ -51,6 +51,9 @@ run_with_spinner "Installing Git" "sudo apt-get install -y git"
 # Install Docker
 run_with_spinner "Installing Docker (docker.io + docker-compose)" "sudo apt-get install -y docker.io docker-compose"
 
+# Enable I2C
+run_with_spinner "Enabling I2C interface" "sudo raspi-config nonint do_i2c"
+
 # Enable and start Docker service
 run_with_spinner "Enabling and starting Docker service" "sudo systemctl enable docker && sudo systemctl start docker"
 
