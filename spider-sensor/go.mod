@@ -2,7 +2,11 @@ module spider-sensor
 
 go 1.24.4
 
-require github.com/shirou/gopsutil/v3 v3.24.5
+require (
+	github.com/shirou/gopsutil/v3 v3.24.5
+	periph.io/x/conn/v3 v3.7.2
+	periph.io/x/host/v3 v3.8.5
+)
 
 require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
