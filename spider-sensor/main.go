@@ -17,7 +17,7 @@ import (
 )
 
 const (
-	MPU6050_ADDR         = 0x68
+	MPU6050_ADDR         = 0x69
 	MPU6050_PWR_MGMT_1   = 0x6B
 	MPU6050_ACCEL_XOUT_H = 0x3B
 )
