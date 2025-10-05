@@ -41,6 +41,7 @@ function run_with_spinner() {
     printf "\r\033[K"
     success "$msg done."
 }
+sudo raspi-config nonint do_i2c 0
 
 # Update packages
 run_with_spinner "Updating package list" "sudo apt-get update -y"
@@ -50,9 +51,6 @@ run_with_spinner "Installing Git" "sudo apt-get install -y git"
 
 # Install Docker
 run_with_spinner "Installing Docker (docker.io + docker-compose)" "sudo apt-get install -y docker.io docker-compose"
-
-# Enable I2C
-run_with_spinner "Enabling I2C interface" "sudo raspi-config nonint do_i2c 0"
 
 # Enable and start Docker service
 run_with_spinner "Enabling and starting Docker service" "sudo systemctl enable docker && sudo systemctl start docker"
